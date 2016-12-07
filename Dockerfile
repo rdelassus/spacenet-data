@@ -21,4 +21,3 @@ ADD . /workspace
 ENV SHELL=/bin/bash
 ENTRYPOINT ["./prep_data"]
 CMD ["/spacenet", "/data"]
-
