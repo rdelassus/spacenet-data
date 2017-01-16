@@ -7,7 +7,10 @@ sample=$OUTPUT/sample.txt
 
 img=$(basename ${VECTOR/.geojson/})
 raster=$RASTERS${img#Geo_}.tif
-label=$OUTPUT/labels/$img.tif
+label_nb=$OUTPUT/labels/no_build/$img.tif
+label_b=$OUTPUT/labels/build/$img.tif
+label_nb_dist=$OUTPUT/labels/no_build_dist/no_build_dist/$img.tif
+label_b_dist=$OUTPUT/labels/build_dist/build_dist/$img.tif
 # humanlabel=$OUTPUT/labels/color/$img.tif
 
 features=$(grep geometry $VECTOR | wc -l)
@@ -19,5 +22,9 @@ then
 fi
 
 echo $raster $label
-# rio rasterize --like $raster --default-value 255 $VECTOR $humanlabel
-rio rasterize --like $raster --default-value 0 --fill 1 $VECTOR $label
+rio rasterize --like $raster --default-value 1 --fill 0 $VECTOR $label_b
+rio rasterize --like $raster --default-value 0 --fill 1 $VECTOR $label_nb
+gdal_proximity.py $label_b $label_b_dist -maxdist 64 -nodata 64 -ot byte
+#convert $label_b_dist -evaluate multiply 16 -depth 8 $label_b_dist
+gdal_proximity.py $label_nb $label_nb_dist -maxdist 63 -nodata 63 -ot byte
+#convert $label_nb_dist -evaluate multiply 16 -depth 8 $label_nb_dist

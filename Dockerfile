@@ -11,7 +11,9 @@ RUN apt-get install -y \
     python-pip \
     gdal-bin \
     libgdal-dev \
-    parallel
+    parallel \
+    ghostscript \
+    imagemagick
 
 RUN pip install -U pip && \
     pip install awscli rasterio
@@ -21,3 +23,5 @@ ADD . /workspace
 ENV SHELL=/bin/bash
 ENTRYPOINT ["./prep_data"]
 CMD ["/spacenet", "/data"]
+
+RUN apt-get install python-gdal

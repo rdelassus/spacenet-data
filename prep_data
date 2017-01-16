@@ -10,7 +10,7 @@ OUTPUT=$2
 # mkdir -p $OUTPUT/labels/color
 
 find $SPACENET -name "*.geojson" | \
-  parallel "./rasterize {} $SPACENET/spacenet_TrainData/3band/3band_ $OUTPUT" \
+  parallel "./rasterize {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
   > $OUTPUT/all.txt
 
 # ls $OUTPUT/labels/grayscale | parallel "./label_counts $OUTPUT/labels/grayscale/{}" \
