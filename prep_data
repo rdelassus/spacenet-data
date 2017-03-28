@@ -6,10 +6,19 @@ set -e
 SPACENET=$1
 OUTPUT=$2
 
-find $SPACENET/spacenet_TrainData/vectordata/geojson/line -name "*.geojson" | \
-parallel "./rasterize_line {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
-> $OUTPUT/all_line.txt
-
-find $SPACENET/spacenet_TrainData/vectordata/geojson/poly -name "*.geojson" | \
-  parallel "./rasterize_poly {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
-  > $OUTPUT/all_poly.txt
+if [$TARGET="contour"]
+then
+    find $SPACENET/spacenet_TrainData/vectordata/geojson/line -name "*.geojson" | \
+    parallel "./rasterize_line {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
+    > $OUTPUT/all_line.txt
+elif [$TARGET="building"]
+then
+    find $SPACENET/spacenet_TrainData/vectordata/geojson/poly -name "*.geojson" | \
+      parallel "./rasterize_build {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
+      > $OUTPUT/all_poly.txt
+elif [$TARGET="no_building"]
+then
+    find $SPACENET/spacenet_TrainData/vectordata/geojson/poly -name "*.geojson" | \
+      parallel "./rasterize_no_build {} $SPACENET/spacenet_TrainData/3band/3band/3band_ $OUTPUT" \
+      > $OUTPUT/all_poly.txt
+fi
