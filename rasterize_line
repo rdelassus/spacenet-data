@@ -1,0 +1,23 @@
+#!/bin/bash
+
+VECTOR=$1
+RASTERS=$2
+OUTPUT=$3
+sample=$OUTPUT/sample.txt
+
+img=$(basename ${VECTOR/.geojson/})
+raster=$RASTERS${img#Geo_}.tif
+label=$OUTPUT/labels/contour/contour/$img.tif
+label_dist=$OUTPUT/labels/contour_dist/contour_dist/$img.tif
+
+features=$(grep geometry $VECTOR | wc -l)
+
+if [ $features -eq 0 ]
+then
+  (>&2 echo "Skipping $VECTOR because it has no features.")
+  exit
+fi
+
+echo $raster $label
+rio rasterize --like $raster --default-value 1 --fill 0 $VECTOR $label
+gdal_proximity.py $label $label_dist -maxdist 127 -nodata 128 -ot byte
