@@ -18,9 +18,10 @@ RUN apt-get install -y \
 RUN pip install -U pip && \
     pip install awscli rasterio
 
+RUN apt-get install python-gdal
+
 WORKDIR /workspace
 ADD . /workspace
 ENV SHELL=/bin/bash
-ENTRYPOINT ["./prep_data /spacenet /data"]
-
-RUN apt-get install python-gdal
+ENTRYPOINT ["./prep_data", "/spacenet", "/data"]
+CMD ["NOT_SET"]
