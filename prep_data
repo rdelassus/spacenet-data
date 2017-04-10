@@ -7,17 +7,17 @@ SPACENET=$1
 OUTPUT=$2
 TARGET=$3
 
-if [$TARGET="contour"]
+if [ $TARGET="contour" ];
 then
     find $OUTPUT/vectordata/geojson/line -name "*.geojson" | \
     parallel "./rasterize_line {} $OUTPUT/3band/3band/3band_ $OUTPUT" \
     > $OUTPUT/all_line.txt
-elif [$TARGET="building"]
+elif [ $TARGET="building" ];
 then
     find $OUTPUT/vectordata/geojson/poly -name "*.geojson" | \
       parallel "./rasterize_build {} $OUTPUT/3band/3band/3band_ $OUTPUT" \
       > $OUTPUT/all_poly.txt
-elif [$TARGET="no_building"]
+elif [ $TARGET="no_building" ];
 then
     find $OUTPUT/vectordata/geojson/poly -name "*.geojson" | \
       parallel "./rasterize_no_build {} $OUTPUT/3band/3band/3band_ $OUTPUT" \
