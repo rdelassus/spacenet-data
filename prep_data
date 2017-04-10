@@ -5,6 +5,7 @@ set -e
 
 SPACENET=$1
 OUTPUT=$2
+TARGET=$3
 
 if [$TARGET="contour"]
 then
