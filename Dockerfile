@@ -21,7 +21,6 @@ RUN pip install -U pip && \
 WORKDIR /workspace
 ADD . /workspace
 ENV SHELL=/bin/bash
-ENTRYPOINT ["./prep_data"]
-CMD ["/spacenet", "/data"]
+ENTRYPOINT ["./prep_data /spacenet /data"]
 
 RUN apt-get install python-gdal
